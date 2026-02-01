@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Airsoft DBMS</title>
+  <style>
+    body { font-family: Arial; background: #f8fafc; }
+    .card { background: white; padding: 20px; margin: 10px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,.1); }
+  </style>
+</head>
+<body>
+
+<h1>Airsoft DBMS Dashboard</h1>
+
+<div class="card">
+  <h3>Stats</h3>
+  <p>Players: <span id="players">...</span></p>
+  <p>Game Sites: <span id="sites">...</span></p>
+  <p>Retailers: <span id="retailers">...</span></p>
+</div>
+
+<div class="card">
+  <h3>Verify Player</h3>
+  <input id="reg" placeholder="Enter registration number">
+  <button onclick="verify()">Check</button>
+  <pre id="result"></pre>
+</div>
+
+<script>
+const API = "https://YOUR-RAILWAY-URL"; // <-- replace this
+
+async function loadStats() {
+  const res = await fetch(API + "/stats");
+  const data = await res.json();
+  document.getElementById("players").innerText = data.players;
+  document.getElementById("sites").innerText = data.sites;
+  document.getElementById("retailers").innerText = data.retailers;
+}
+
+async function verify() {
+  const reg = document.getElementById("reg").value;
+  const res = await fetch(API + "/verify/" + reg);
+  const data = await res.json();
+  document.getElementById("result").innerText = JSON.stringify(data, null, 2);
+}
+
+loadStats();
+</script>
+
+</body>
+</html>
